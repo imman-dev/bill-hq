@@ -1207,17 +1207,98 @@ setTimeout(scheduleEvents, 2000);
 setTimeout(randomWander, 3000);
 setTimeout(agentMeeting, 6000);
 
-// Task checkboxes toggle
-document.querySelectorAll('.task-check:not(.done)').forEach(c=>{
-  c.addEventListener('click',()=>{
-    if(c.classList.contains('active')){
-      c.classList.remove('active');
-      c.classList.add('done');
-      c.textContent='✓';
-      c.closest('.task-row').style.opacity='.5';
+// TASK SYSTEM — slide to completed, 30-day archive to Memory
+const STORAGE_KEY = 'wardagency_completed_tasks';
+
+function getCompletedTasks(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveCompletedTasks(tasks){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); } catch(e){}
+}
+
+function completeTask(row){
+  const title = row.querySelector('.task-title')?.textContent || 'Task';
+  const meta = row.querySelector('.task-meta')?.textContent || '';
+  const check = row.querySelector('.task-check');
+  if(!check || check.classList.contains('done')) return;
+
+  // Mark done visually
+  check.classList.remove('active');
+  check.classList.add('done');
+  check.textContent = '✓';
+
+  // Slide to completed section
+  row.style.transition = 'all 0.4s ease';
+  row.style.opacity = '0';
+  row.style.transform = 'translateX(20px)';
+
+  setTimeout(()=>{
+    // Remove from active section
+    row.remove();
+
+    // Add to completed section
+    const completedSection = document.querySelector('#page-tasks .slabel[data-completed]');
+    const newRow = document.createElement('div');
+    newRow.className = 'task-row';
+    newRow.style.opacity = '0.5';
+    newRow.innerHTML = `<div class="task-check done">✓</div><div class="task-info"><div class="task-title">${title}</div><div class="task-meta">${meta} · Completed today</div></div>`;
+    if(completedSection){
+      completedSection.insertAdjacentElement('afterend', newRow);
     }
+
+    // Save to storage with timestamp
+    const tasks = getCompletedTasks();
+    tasks.push({ title, meta, completedAt: Date.now() });
+    saveCompletedTasks(tasks);
+
+    // Update memory tab
+    updateMemoryArchive();
+  }, 420);
+}
+
+function updateMemoryArchive(){
+  const tasks = getCompletedTasks();
+  const now = Date.now();
+  const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+  const recent = tasks.filter(t => now - t.completedAt < thirtyDays);
+  const archived = tasks.filter(t => now - t.completedAt >= thirtyDays);
+
+  // Update memory tab with archived tasks
+  const memContent = document.querySelector('.mem-content');
+  if(!memContent || archived.length === 0) return;
+  let archiveBlock = document.getElementById('mem-archive-block');
+  if(!archiveBlock){
+    archiveBlock = document.createElement('div');
+    archiveBlock.id = 'mem-archive-block';
+    archiveBlock.innerHTML = '<div class="mem-section-lbl">ARCHIVED COMPLETED TASKS</div>';
+    memContent.appendChild(archiveBlock);
+  }
+  archiveBlock.innerHTML = '<div class="mem-section-lbl">ARCHIVED COMPLETED TASKS</div>';
+  archived.forEach(t=>{
+    const d = new Date(t.completedAt);
+    const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const item = document.createElement('div');
+    item.className = 'mem-bullet';
+    item.innerHTML = `<div class="mem-bullet-dot" style="background:var(--green)"></div><div class="mem-bullet-text"><strong>✓ ${t.title}</strong> — completed ${dateStr}</div>`;
+    archiveBlock.appendChild(item);
   });
+
+  // Remove archived from storage, keep only recent
+  saveCompletedTasks(recent);
+}
+
+// Wire up all task checkboxes
+document.querySelectorAll('.task-check:not(.done)').forEach(c=>{
+  c.addEventListener('click',()=>{ completeTask(c.closest('.task-row')); });
 });
+
+// Fix completed section label to be targetable
+const completedLabel = document.querySelector('#page-tasks .slabel');
+if(completedLabel) completedLabel.setAttribute('data-completed','true');
+
+// Run archive check on load
+updateMemoryArchive();
 </script>
 </body>
 </html>
