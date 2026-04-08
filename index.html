@@ -389,7 +389,8 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-s
     <div class="agent-row"><div class="ar-dot" style="background:var(--green)"></div><div class="ar-name">Spark</div><div class="ar-status">IDEATING</div></div>
     <div class="agent-row"><div class="ar-dot" style="background:var(--amber)"></div><div class="ar-name">Ralph</div><div class="ar-status">IDLE</div></div>
     <div class="agent-row"><div class="ar-dot" style="background:var(--amber)"></div><div class="ar-name">Quill</div><div class="ar-status">PLANNED</div></div>
-    <div class="agent-row"><div class="ar-dot" style="background:var(--muted)"></div><div class="ar-name">Charlie</div><div class="ar-status">LOCKED</div></div>
+    <div class="agent-row"><div class="ar-dot" style="background:var(--green)"></div><div class="ar-name">Rex</div><div class="ar-status">FLOOR</div></div>
+    <div class="agent-row"><div class="ar-dot" style="background:var(--green)"></div><div class="ar-name">Charlie</div><div class="ar-status">ONLINE</div></div>
     <div class="agent-row"><div class="ar-dot" style="background:var(--muted)"></div><div class="ar-name">Echo</div><div class="ar-status">LOCKED</div></div>
   </div>
 </nav>
@@ -587,16 +588,33 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-s
         <div class="agent-tooltip"><div class="tooltip-name">Quill — Content Writer</div><div class="tooltip-task">Planned · Activates when first agency client signs</div><div class="tooltip-status" style="color:var(--amber)">● PLANNED</div></div>
       </div>
 
-      <!-- CHARLIE locked at empty desk -->
-      <div class="agent-sprite" style="left:800px;bottom:160px;opacity:.35;" id="charlie-sprite">
+      <!-- CHARLIE - NOW ONLINE -->
+      <div class="agent-sprite walker" id="agent-charlie" style="left:800px;bottom:160px;">
         <div class="px-body">
-          <div class="px-head" style="background:#4a5870;"><div class="px-eye px-eye-l" style="opacity:.4;"></div><div class="px-eye px-eye-r" style="opacity:.4;"></div></div>
-          <div class="px-torso" style="background:#2a3040;"></div>
-          <div class="px-legs"><div class="px-leg" style="background:#1a2030;"></div><div class="px-leg" style="background:#1a2030;"></div></div>
+          <div class="px-head" style="background:#22d4c4;"><div class="px-eye px-eye-l"></div><div class="px-eye px-eye-r"></div></div>
+          <div class="px-torso" style="background:#0d7a72;"></div>
+          <div class="px-legs"><div class="px-leg" style="background:#084a44;"></div><div class="px-leg" style="background:#084a44;"></div></div>
         </div>
-        <div class="px-status" style="background:var(--muted);"></div>
-        <div class="name-tag" style="opacity:.5;">CHARLIE</div>
-        <div class="agent-tooltip"><div class="tooltip-name">Charlie — Infrastructure</div><div class="tooltip-task">LOCKED until Windows PC is set up tonight. All scripts staged and ready to go.</div><div class="tooltip-status" style="color:var(--muted)">● LOCKED · NEEDS PC</div></div>
+        <div class="px-status" style="background:var(--green);"></div>
+        <div class="name-tag">CHARLIE</div>
+        <div class="agent-tooltip"><div class="tooltip-name">Charlie — Infrastructure Engineer</div><div class="tooltip-task">ONLINE · n8n running · GitHub connected · deploy.bat active · 2AM scheduler pending</div><div class="tooltip-status" style="color:var(--green)">● ACTIVE</div></div>
+      </div>
+      <div class="desk-sprite" style="left:785px;bottom:145px;">
+        <div class="desk-top" style="width:52px;height:22px;position:relative;"><div class="desk-monitor" style="width:16px;height:12px;position:absolute;top:3px;left:4px;"><div class="desk-monitor-glow"></div></div></div>
+        <div class="desk-legs" style="height:7px;"><div class="desk-leg" style="height:7px;"></div><div class="desk-leg" style="height:7px;"></div></div>
+      </div>
+
+      <!-- REX - Bill's Right Hand / Floor Manager -->
+      <div class="agent-sprite walker" id="agent-rex" style="left:660px;bottom:230px;">
+        <div class="task-bubble">Monitoring tasks...</div>
+        <div class="px-body">
+          <div class="px-head" style="background:#ff5c72;"><div class="px-eye px-eye-l"></div><div class="px-eye px-eye-r"></div></div>
+          <div class="px-torso" style="background:#a02030;"></div>
+          <div class="px-legs"><div class="px-leg" style="background:#601020;"></div><div class="px-leg" style="background:#601020;"></div></div>
+        </div>
+        <div class="px-status" style="background:var(--green);"></div>
+        <div class="name-tag" style="color:#ff5c72;">REX</div>
+        <div class="agent-tooltip"><div class="tooltip-name" style="color:var(--red)">Rex — Bill's Right Hand</div><div class="tooltip-task">Floor manager. Monitors all active tasks in real time. Flags stalling agents. Steps in when someone needs a nudge. Bill thinks, Rex moves.</div><div class="tooltip-status" style="color:var(--green)">● ACTIVE · Floor patrol</div></div>
       </div>
 
       <!-- Live activity ticker -->
@@ -626,7 +644,8 @@ body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;font-s
       <div class="strip-agent"><div style="width:28px;height:28px;border-radius:8px;background:rgba(124,92,255,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;">💡</div><div><div class="strip-name">Spark</div><div class="strip-task">● Ideating</div></div></div>
       <div class="strip-agent"><div style="width:28px;height:28px;border-radius:8px;background:rgba(245,166,35,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;">✅</div><div><div class="strip-name">Ralph</div><div class="strip-task">○ Idle · ready</div></div></div>
       <div class="strip-agent" style="opacity:.5;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,110,180,0.12);display:flex;align-items:center;justify-content:center;font-size:13px;">✍️</div><div><div class="strip-name">Quill</div><div class="strip-task">○ Planned</div></div></div>
-      <div class="strip-agent" style="opacity:.4;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(74,88,112,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;">⚙️</div><div><div class="strip-name">Charlie</div><div class="strip-task">🔒 Needs PC</div></div></div>
+      <div class="strip-agent"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,92,114,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;">⚡</div><div><div class="strip-name">Rex</div><div class="strip-task">● Floor patrol</div></div></div>
+      <div class="strip-agent"><div style="width:28px;height:28px;border-radius:8px;background:rgba(34,212,196,0.15);display:flex;align-items:center;justify-content:center;font-size:13px;">⚙️</div><div><div class="strip-name">Charlie</div><div class="strip-task">● n8n online</div></div></div>
     </div>
   </div>
 
@@ -1065,6 +1084,8 @@ const agentData = {
   'agent-flip': { name:'FLIP', homeX:345, homeY:160, color:'#22d4c4', messages:['Deal spotted!','Checking eBay...','Pioneer $45!','Good margin','Flip it!'] },
   'agent-spark': { name:'SPARK', homeX:460, homeY:160, color:'#7c5cff', messages:['New idea!','Pitch ready','Package built','Strategy done','Ideating...'] },
   'agent-ralph': { name:'RALPH', homeX:575, homeY:160, color:'#f5a623', messages:['QC check...','Looks good','Flagging this','Reviewing...','Approved ✓'] },
+  'agent-rex': { name:'REX', homeX:660, homeY:230, color:'#ff5c72', messages:['On it.','Task check','Flagging this','Moving fast','Floor check'] },
+  'agent-charlie': { name:'CHARLIE', homeX:800, homeY:160, color:'#22d4c4', messages:['Deploy done','Git pushed','n8n running','Script ready','Automated ✓'] },
 };
 
 const chatMessages = [
@@ -1075,6 +1096,9 @@ const chatMessages = [
   {from:'Hunter', to:'Ralph', msg:'MAO on 1247 Pine St = $84k. Passing to QC'},
   {from:'Scout', to:'Spark', msg:'Cut & Shave has zero web presence. Easy target'},
   {from:'Ralph', to:'Hunter', msg:'Lead batch verified. Top 3 flagged for Immanuel'},
+  {from:'Rex', to:'Scout', msg:'You stalled on task 3. Need help?'},
+  {from:'Rex', to:'Charlie', msg:'Deploy pipeline good. Keep it running.'},
+  {from:'Charlie', to:'Rex', msg:'GitHub push confirmed. Site is live.'},
 ];
 
 let msgIndex = 0;
@@ -1128,7 +1152,7 @@ function returnHome(agentId) {
 function randomWander() {
   const agents = Object.keys(agentData);
   // Pick a random active agent (not ralph or quill randomly)
-  const activeAgents = ['agent-scout','agent-hunter','agent-flip','agent-spark'];
+  const activeAgents = ['agent-scout','agent-hunter','agent-flip','agent-spark','agent-rex','agent-charlie'];
   const agentId = activeAgents[Math.floor(Math.random() * activeAgents.length)];
   const data = agentData[agentId];
   const sceneW = getSceneWidth();
