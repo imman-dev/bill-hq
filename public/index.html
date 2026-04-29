@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bill HQ — Ward AI Agency Mission Control</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="bill-mark">BILL</span>
+      <span class="brand-sub">// Ward AI Agency Mission Control</span>
+    </div>
+    <div class="topbar-meta">
+      <span id="connection-dot" class="dot dot-pending" title="connection status"></span>
+      <span id="clock" class="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- Morning brief / latest synthesis -->
+    <section class="panel panel-brief" id="panel-brief">
+      <header class="panel-head">
+        <h2>Morning Brief</h2>
+        <button class="ghost-btn" id="refresh-brief" title="re-run Bill synthesis">↻</button>
+      </header>
+      <div class="panel-body" id="brief-content">
+        <p class="muted">Brief loads here once Bill produces one (Phase 1.5).</p>
+        <p class="muted small">For now this panel reflects the latest agent report from the vault.</p>
+      </div>
+    </section>
+
+    <!-- Agency state (KPIs, agent matrix, priorities) -->
+    <section class="panel panel-state" id="panel-state">
+      <header class="panel-head">
+        <h2>Agency State</h2>
+        <a class="ghost-btn" id="open-state-file" title="open in vault">↗</a>
+      </header>
+      <div class="panel-body markdown-body" id="state-content"></div>
+    </section>
+
+    <!-- Task queue -->
+    <section class="panel panel-tasks" id="panel-tasks">
+      <header class="panel-head">
+        <h2>Task Queue</h2>
+        <a class="ghost-btn" id="open-tasks-file" title="open in vault">↗</a>
+      </header>
+      <div class="panel-body markdown-body" id="tasks-content"></div>
+    </section>
+
+    <!-- Bill chat -->
+    <section class="panel panel-chat" id="panel-chat">
+      <header class="panel-head">
+        <h2>Bill</h2>
+        <span class="muted small" id="chat-status">idle</span>
+      </header>
+      <div class="chat-log" id="chat-log"></div>
+      <form class="chat-input" id="chat-form" autocomplete="off">
+        <input type="text" id="chat-input" placeholder="ask Bill anything (Cmd/Ctrl+K to focus)" />
+        <button type="submit" id="chat-send">send</button>
+      </form>
+    </section>
+
+    <!-- Agent dispatch -->
+    <section class="panel panel-agents" id="panel-agents">
+      <header class="panel-head">
+        <h2>Agents</h2>
+        <span class="muted small" id="agents-meta"></span>
+      </header>
+      <div class="agent-grid" id="agent-grid"></div>
+    </section>
+
+    <!-- Recent activity -->
+    <section class="panel panel-activity" id="panel-activity">
+      <header class="panel-head">
+        <h2>Recent Activity</h2>
+      </header>
+      <ul class="activity-list" id="activity-list"></ul>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
