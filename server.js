@@ -5,6 +5,7 @@
 
 const express = require('express');
 const path = require('path');
+const os = require('os');
 const fs = require('fs/promises');
 const { Vault } = require('./lib/vault');
 const { VaultWatcher } = require('./lib/watcher');
@@ -143,10 +144,27 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, ts: Date.now(), vaultPath: config.vaultPath });
 });
 
+function getLanIPs() {
+  const ips = [];
+  const ifaces = os.networkInterfaces();
+  for (const name of Object.keys(ifaces)) {
+    for (const iface of ifaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        ips.push(iface.address);
+      }
+    }
+  }
+  return ips;
+}
+
 const port = config.port || 3737;
 app.listen(port, () => {
-  console.log(`\n[ Bill HQ ] Mission Control online at http://localhost:${port}`);
-  console.log(`[ Bill HQ ] Reading vault from: ${config.vaultPath}`);
+  console.log(`\n[ Bill HQ ] Mission Control online`);
+  console.log(`[ Bill HQ ] Local URL  : http://localhost:${port}`);
+  for (const ip of getLanIPs()) {
+    console.log(`[ Bill HQ ] LAN URL    : http://${ip}:${port}   (use this from other devices on your network)`);
+  }
+  console.log(`[ Bill HQ ] Vault path : ${config.vaultPath}`);
   console.log(`[ Bill HQ ] Ctrl+C to stop.\n`);
 });
 
