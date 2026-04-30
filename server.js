@@ -120,7 +120,10 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// --- Agent dispatch (stub for now — wired up in Phase 2) ---
+// --- Agent dispatch ---
+// POST /api/agents/<name>/run accepts an optional JSON body with `options`
+// that get passed straight to the agent's run() function.
+//   Example body: { "target": "traks-salon", "brief": "follow up after no reply for 2 days" }
 app.post('/api/agents/:name/run', async (req, res) => {
   const { name } = req.params;
   const cfg = config.agents[name];
@@ -128,11 +131,14 @@ app.post('/api/agents/:name/run', async (req, res) => {
 
   try {
     const agentPath = path.join(__dirname, 'agents', `${name}.js`);
+    // Bust require cache so edits to agent files take effect without server restart.
+    delete require.cache[require.resolve(agentPath)];
     const agent = require(agentPath);
     if (typeof agent.run !== 'function') {
       return res.status(501).json({ error: `agent ${name} has no run() yet` });
     }
-    const out = await agent.run({ vault, config, agentConfig: cfg });
+    const options = (req.body && typeof req.body === 'object') ? req.body : {};
+    const out = await agent.run({ vault, config, agentConfig: cfg, options });
     res.json({ ok: true, agent: name, ...out });
   } catch (err) {
     res.status(500).json({ error: err.message });
